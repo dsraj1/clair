@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM golang:1.13-alpine
+FROM golang:1.15.8-alpine
 
 VOLUME /config
 EXPOSE 6060 6061
@@ -25,6 +25,8 @@ RUN apk add --no-cache git rpm xz dumb-init && \
     go install -ldflags "-X github.com/quay/clair/v2/pkg/version.Version=$CLAIR_VERSION" -v ./cmd/clair && \
     mv /go/bin/clair /clair && \
     rm -rf /go /usr/local/go
+
+RUN apk upgrade
 
 ENTRYPOINT ["/usr/bin/dumb-init", "--", "/clair"]
 
